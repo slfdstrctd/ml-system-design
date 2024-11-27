@@ -1,0 +1,27 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.0
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
+  - repo: https://github.com/pycqa/pylint
+    rev: v3.3.1
+    hooks:
+      - id: pylint
+        name: pylint_core
+        entry: poetry run pylint
+        files: .*\.py$
+        language: system
+        types: [ python ]
+        verbose: false
+        args:
+          - --fail-under=9
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v1.13.0"
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: poetry run mypy .
+        pass_filenames: false
+        args: [ "--config-file", "pyproject.toml" ]

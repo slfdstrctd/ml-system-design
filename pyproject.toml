@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "ml-system-design"
+version = "0.1.0"
+description = ""
+authors = ["Artem Ponomarenko <artichek123@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+ruff = "^0.8.0"
+pre-commit = "^4.0.1"
+pylint = "^3.3.1"
+mypy = "^1.13.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.pylint]
+disable = [
+    "C0114", # missing-module-docstring
+    "C0116", # missing-function-docstring
+    "C0115", # missing-class-docstring
+    "W1401", # for using regex in the code
+    "C0103", # For using data-science naming style (X_train, etc.)
+]
+[tool.pylint.'MASTER']
+max-line-length = 120
+
+[tool.mypy]
+check_untyped_defs = true
+ignore_missing_imports = true
+disallow_untyped_calls = false
