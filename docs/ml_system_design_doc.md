@@ -6,11 +6,11 @@ The salary prediction system aims to provide jobseekers with accurate salary exp
 ## 2. Business Requirements and Constraints
 
 ### 2.1 Business Requirements
-- Provide accurate salary predictions with a maximum error margin of ±15% to ensure reliability
+- Provide accurate salary predictions to ensure reliability for job seekers
 - Generate interactive visualizations showing the user's position in the job market landscape
 - Process and analyze resumes in real-time (response time < 30 seconds)
 - Handle both Russian and English language resumes
-- Support pdf for resume uploads
+- Support resume uploads in PDF format
 
 ### 2.2 Business Constraints
 - Must comply with Russian personal data protection laws
@@ -22,9 +22,9 @@ The salary prediction system aims to provide jobseekers with accurate salary exp
 
 ### 3.1 In Scope
 - Resume text extraction and processing pipeline
-- Salary prediction model using CatBoost
-- Skills and position clustering
-- Streamlit-based web interface
+- Salary prediction and job market insights
+- Segmentation of users based on skills and positions
+- MVP implementation with web interface
 - Basic error handling and input validation
 - Model monitoring and retraining pipeline
 
@@ -37,79 +37,77 @@ The salary prediction system aims to provide jobseekers with accurate salary exp
 
 ## 4. Solution Prerequisites
 - Historical salary data (minimum 1000 records)
-- Pre-trained FastText model for Russian language
+- Tools for text analysis and embedding generation for multi-language support
 - Computing resources for model training and inference
 - Storage infrastructure for user data and model artifacts
 
 ## 5. Task Definition
 
 ### 5.1 Machine Learning Tasks
-1. Regression Task:
-   - Input: Resume text features and FastText embeddings
+1. **Regression Task**
+   - Input: Extracted resume text features and relevant embeddings
    - Output: Predicted salary range
-   - Metric: MAE (Mean Absolute Error) < 15000
+   - Success criteria: To be determined based on data analysis and business requirements
 
-2. Clustering Task:
-   - Input: Position and skills embeddings
-   - Output: Job market segments visualization
-   - Metric: Silhouette score > 0.6
+2. **Clustering Task**
+   - Input: Processed position and skills data
+   - Output: Segmented groups representing job market clusters
+   - Success criteria: To be determined based on data analysis and business requirements
 
 ### 5.2 Technical Requirements
 - Model inference time: < 30 seconds
 - API response time: < 10 seconds
 - System uptime: 99.9%
-- Maximum file size: 100MB
+- Maximum file size for uploads: 100MB
 
 ## 6. Solution Architecture
+### System Overview
+The whole system consists of the following components
+
+1. **Frontend Layer**
+
+   A web-based interface for user interactions (e.g., resume uploads, results display, and feedback collection).
+
+2. **Processing Layer**
+
+   Methods for transforming resume data (after text extraction and preprocessing) into usable features for downstream tasks.
+
+3. **Model Layer**
+   - Predictive models for salary
+   - Analytical processes for skills and position clustering
+   - Model registry for managing versions and monitoring performance.
+
+4. **Data Layer**
+   - Storage for resumes, historical salary data, and user feedback.
+   - Management of processed outputs and model artifacts.
+
+### Conceptual Data Flow
+1. The user uploads a resume through the web interface.
+2. The system extracts and preprocesses relevant information from the resume (e.g., skills, experience, and education).
+3. Embedding methods are applied to transform extracted features into numerical representations.
+4. Predictive and clustering methods are applied to generate salary insights and find corresponing cluster for the user in the job market.
+5. Results are displayed through interactive dashboards.
+
 ```mermaid
 graph TD
-    A[Resume Upload] --> B[PDF Parser]
-    B --> C[Text Preprocessing]
-    C --> D[FastText Embeddings]
-    D --> E[CatBoost Regression Model]
-    D --> F[Clustering Model]
-    E --> G[Salary Prediction]
-    F --> H[Market Position Visualization]
-    G --> I[Results Dashboard]
-    H --> I
-    I --> J[User Feedback Collection]
-    
-    K[Training Pipeline] --> L[Historical Data]
-    L --> M[Model Training]
-    M --> N[Model Registry]
-    N --> E
-    N --> F
+A[User resume upload] --> B[Text extraction and processing]
+    B --> C[Feature transformation]
+    C --> D[Predictive analysis]
+    C --> E[Clustering analysis]
+    D --> F[Salary insights]
+    E --> G[Skills and position Insights]
+    F --> H[Results dashboard display]
+    G --> H
 ```
 
-### Components Description:
-1. Frontend Layer:
-   - Streamlit web interface
-   - Resume upload functionality
-   - Interactive visualization dashboard
-   - Error handling and user feedback collection
-
-2. Processing Layer:
-   - Resume parsing service
-   - Text preprocessing pipeline
-   - FastText embedding generation
-   - Model inference service
-
-3. Model Layer:
-   - CatBoost regression model
-   - Clustering model
-   - Model registry and versioning
-   - Model monitoring and retraining pipeline
-
-4. Data Layer:
-   - Resume storage
-   - Historical salary data
-   - Model artifacts storage
-   - User feedback database
-
-### Data Flow:
-1. User uploads resume through Streamlit interface
-2. Resume is parsed and preprocessed
-3. FastText embeddings are generated
-4. Salary prediction and clustering models process the embeddings
-5. Results are displayed in interactive dashboard
-6. User feedback is collected for model improvement
+### Model training pipeline:
+```mermaid
+graph TD
+    A[Data collection] --> B[Data processing]
+    B --> C[Feature engineering]
+    C --> D[Model development]
+    D --> E[Model evaluation]
+    E --> F[System integration]
+    F --> G[Deployment]
+    G --> H[Monitoring and feedback]  --> A
+```
