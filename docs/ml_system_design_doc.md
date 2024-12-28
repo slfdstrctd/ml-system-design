@@ -18,6 +18,125 @@ The salary prediction system aims to provide jobseekers with accurate salary exp
 - System should handle up to 1000 concurrent users
 - Must maintain user privacy and data confidentiality
 
+### 2.3 Problem Solving Steps
+
+#### Stage 1. Data Preparation
+
+**Key results from EDA:**
+- Dataset contains 19489 records with minimal missing values (only in tags_id)
+- Salary distributions are left-skewed with most values under 100,000 RUB
+- Data primarily represents "blue collar" positions and retail/sales roles
+- Strong geographical concentration in major cities (Moscow, St. Petersburg)
+
+**Data Quality Issues:**
+1. Imbalanced position distribution:
+   - Top positions have 400+ entries
+   - Many positions have very few entries
+2. Salary range variability:
+   - Wide gaps between salary_from and salary_to
+   - Need to handle outliers (especially in high salary ranges)
+3. Skills data requires preprocessing:
+   - Currently stored as string representations of lists
+   - Mix of hard and soft skills
+   - Varying granularity of skill descriptions
+
+**Data Generation Process:**
+- Data appears to be from job posting platform
+- Regular updates expected as new vacancies are posted
+- One-time data unload for now
+
+**Required Stage Result:**
+Clean, preprocessed dataset with:
+- Normalized position names
+- Removed outliers from salaries
+- Processed skills features
+
+
+#### Stage 2. Preparation of Predictive Models
+
+##### ML Metrics Selection
+Primary metrics:
+- MAE (Mean Absolute Error) - for absolute error in salary predictions
+- MAPE (Mean Absolute Percentage Error) - interpretable for salary ranges
+- R^2 score - to measure overall prediction quality
+
+Validation scheme:
+- Train-test split (80/20) to simulate real-world prediction scenario
+- K-fold cross-validation (k=5) for model stability assessment
+
+##### Baseline models
+1. Simple baseline:
+   - Linear Regression / KNN using basic features:
+     - City id
+     - Schedule type
+     - Custom position
+   - Expected MAE: 30k-40k
+
+2. Advanced baseline:
+   - Gradient boosting (LightGBM/CatBoost)
+   - Additional features:
+     - Position embeddings
+     - Skills embeddings
+     - Salary normalization
+   - Clustering on positions and skills (K-means?)
+   - Expected MAE: <20k
+
+##### Development Strategy
+1. Feature Engineering:
+   - Text embeddings for position names
+   - Skills clustering and aggregation
+
+2. Model Selection:
+   - Compare tree-based models (LightGBM, CatBoost)
+   - Ensemble methods for stability
+
+##### Risks and Mitigation
+1. Data Risks:
+   - Salary range variability - use outlier handling
+   - Skills / position bias - develop cluster-specific models
+
+2. Model Risks:
+   - Skill importance stability - regular feature importance analysis
+   - Model drift - implement monitoring and retraining pipeline
+
+**Required Stage Result:**
+- Validated baseline models meeting minimum performance criteria
+- Feature importance analysis
+- Model interpretation reports
+
+#### Stage 3. Market Segmentation and Clustering
+
+##### Approach
+- Implement clustering algorithms for position/skills segmentation
+- Define similarity metrics for skills and positions
+- Create interactive visualizations for market positioning
+
+##### Methods
+- K-means clustering for initial segmentation
+- Dimension reduction for visualization
+
+##### Required Stage Result
+- Defined optimum number of clusters
+- Visualization system for user positioning
+- Documentation of clustering methodology
+
+#### Stage 4. System Integration and Deployment
+
+##### Integration Steps
+- API development for model serving
+- Frontend integration with visualization tools
+- Monitoring system setup
+- Performance optimization
+
+##### Success Criteria
+- System stability under load
+- Proper error handling and logging
+
+##### Required Stage Result
+- Deployed system meeting all technical requirements
+- Documentation for maintenance and updates
+- Monitoring dashboard for system health
+
 ## 3. Project Scope
 
 ### 3.1 In Scope
